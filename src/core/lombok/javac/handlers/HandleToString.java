@@ -210,18 +210,15 @@ public class HandleToString extends JavacAnnotationHandler<ToString> {
       boolean fieldIsPrimitive = memberType instanceof JCPrimitiveTypeTree;
       boolean fieldIsPrimitiveArray = memberType instanceof JCArrayTypeTree && ((JCArrayTypeTree) memberType).elemtype instanceof JCPrimitiveTypeTree;
       boolean fieldIsObjectArray = !fieldIsPrimitiveArray && memberType instanceof JCArrayTypeTree;
-      boolean fieldIsString = memberType.toString().equals("String");
-
-      if (fieldIsString) {
-        // TODO: do stuff, and remove printer
-        System.out.println("issa string");
-      }
 
       if (fieldIsPrimitiveArray || fieldIsObjectArray) {
-        // TODO: change to be good syntax
+        // TODO: change to be actual java syntax
         JCExpression tsMethod = chainDots(typeNode, "java", "util", "Arrays", fieldIsObjectArray ? "deepToString" : "toString");
         expr = maker.Apply(List.<JCExpression>nil(), tsMethod, List.<JCExpression>of(memberAccessor));
-      } else expr = memberAccessor;
+      } else {
+        JCExpression tsMethod = chainDots(typeNode, "BetterToString", "make");
+        expr = maker.Apply(List.<JCExpression>nil(), tsMethod, List.<JCExpression>of(memberAccessor));
+      }
 
       if (first) {
         current = maker.Binary(CTC_PLUS, current, expr);
