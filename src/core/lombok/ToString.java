@@ -40,7 +40,7 @@ public @interface ToString {
 	 * 
 	 * @return Whether or not to include the names of fields in the string produced by the generated {@code toString()}.
 	 */
-	boolean includeFieldNames() default true;
+	boolean includeFieldNames() default false;
 	
 	/**
 	 * Any fields listed here will not be printed in the generated {@code toString} implementation.
